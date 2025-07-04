@@ -50,20 +50,17 @@ const vehicleSchema = new Schema({
     type: String,
     required: true,
   },
-  BookingStatus: {
-    type: Boolean,
-    required: true,
-  },
+
   OwnerId: {
-    type: Number,
+    type: String,
     required: true,
   },
   Availability: {
     type: Boolean,
     required: true,
   },
-  Photo: {
-    type: String, // URL to the uploaded image
+  Photos: {
+    type: [String], // URL to the uploaded image
     required: false,
   },
 });

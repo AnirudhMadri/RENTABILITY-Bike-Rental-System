@@ -100,6 +100,7 @@ export default function OtpLoginForm() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("phone", response.data.customer.Phone);
         localStorage.setItem("name", response.data.customer.Name);
+        localStorage.setItem("id", response.data.customer.id);
       }
       console.log("Otp sent to be verified", response.data);
     } catch (error) {

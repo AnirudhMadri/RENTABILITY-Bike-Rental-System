@@ -8,6 +8,7 @@ export default function Navbar() {
   const [logIn, setLogIn] = useState(false);
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const [loginClick, setLoginClick] = useState(false);
 
   useEffect(() => {
     try {
@@ -37,6 +38,10 @@ export default function Navbar() {
     if (logIn == false) {
       navigate("/");
     }
+  };
+  const buttonLogic2 = () => {
+    console.log(loginClick);
+    setLoginClick(!loginClick);
   };
 
   return (
@@ -82,10 +87,32 @@ export default function Navbar() {
         {logIn == true && (
           <button
             id="subtitle"
-            className="px-15 py-4 text-white bg-black transition delay-10 duration-300 ease-in-out hover:scale-102  mr-10 text-xl rounded-xl hover:cursor-pointer "
+            onClick={buttonLogic2}
+            className="relative px-15 py-4 text-white bg-black transition delay-10 duration-300 ease-in-out hover:scale-102  mr-10 text-xl rounded-xl hover:cursor-pointer "
           >
             Welcome, {name}!
           </button>
+        )}
+        {loginClick == true && (
+          <div className="absolute top-full w-70 flex flex-col right-12 mt-2  border rounded-xl shadow-xl bg-gray-100/30 backdrop-blur-xs border-gray-300 p-4 z-50">
+            <button
+              id="subtitle"
+              onClick={() => {
+                localStorage.clear();
+                setLogIn(false);
+                navigate("/home"); // or use navigate if preferred
+              }}
+              className="text-2xl mb-3 hover:cursor-pointer hover:scale-102 transition delay-10 duration-300 ease-in-out "
+            >
+              Logout
+            </button>
+            <button
+              id="subtitle"
+              className="text-2xl mt-3 hover:cursor-pointer hover:scale-102 transition delay-10 duration-300 ease-in-out"
+            >
+              Profile
+            </button>
+          </div>
         )}
       </nav>
     </div>

@@ -7,7 +7,7 @@ router.post(
   "/addVehicle",
   [
     body("Type")
-      .isIn(["Bike", "Car"])
+      .isIn(["Geared", "Non Geared"])
       .withMessage("Type must be either 'Bike' or 'Car'"),
 
     body("Brand")
@@ -36,17 +36,16 @@ router.post(
       .notEmpty()
       .withMessage("Location is required"),
 
-    body("BookingStatus")
-      .isBoolean()
-      .withMessage("BookingStatus must be true or false"),
-
     body("OwnerId")
-      .isInt({ gt: 0 })
-      .withMessage("OwnerId must be a positive integer"),
+      .isAlphanumeric()
+      .withMessage("OwnerId must be alphanumeric"),
 
     body("Availability")
       .isBoolean()
       .withMessage("Availability must be true or false"),
+    body("Photos")
+      .isArray({ max: 4 })
+      .withMessage("Photos must be an array of up to 4 image URLs"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -61,9 +60,9 @@ router.post(
         Year: req.body.Year,
         Price_Per_Hour: req.body.Price_Per_Hour,
         Location: req.body.Location,
-        BookingStatus: req.body.BookingStatus,
         OwnerId: req.body.OwnerId,
         Availability: req.body.Availability,
+        Photos: req.body.Photos,
       });
       res.json({ success: true });
     } catch (error) {
