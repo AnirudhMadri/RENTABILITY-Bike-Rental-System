@@ -79,7 +79,17 @@ export default function Booking() {
     OwnerId: "",
     Availability: false,
     Photos: [],
+
+    // Only user-editable fields:
+    FuelType: "",
+    FuelCapacity: "",
+    Weight: "",
+    Mileage: "",
+    Displacement: "",
+    TopSpeed: "",
+    Seats: "",
   });
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" }); // or behavior: "auto"
 
@@ -370,13 +380,7 @@ export default function Booking() {
                         </select>
                       ) : (
                         <input
-                          type={
-                            key === "Year" ||
-                            key === "Price_Per_Hour" ||
-                            key === "OwnerId"
-                              ? "number"
-                              : "text"
-                          }
+                          type="text"
                           value={value}
                           onChange={(e) =>
                             handleVehicleChange(key, e.target.value)

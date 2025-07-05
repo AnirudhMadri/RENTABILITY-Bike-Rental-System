@@ -20,52 +20,40 @@ const mongoDB = async () => {
 // Switch to specific database if needed (optional)
 const vehicleDB = mongoose.connection.useDb("VehicleDB");
 
-// Define the Customer schema
+// Define the schema
 const { Schema } = mongoose;
 
 const vehicleSchema = new Schema({
-  Type: {
-    type: String,
-    required: true,
-  },
+  Type: { type: String, required: true },
+  Brand: { type: String, required: true },
+  Model: { type: String, required: true },
+  Year: { type: Number, required: true },
+  Price_Per_Hour: { type: Number, required: true },
+  Location: { type: String, required: true },
+  OwnerId: { type: String, required: true },
+  Availability: { type: Boolean, required: true },
+  Trips: { type: Number, default: 0 }, // optional by default
+  Photos: { type: [String] }, // optional by default
 
-  Brand: {
-    type: String,
-    required: true,
-  },
+  // Admin/User optional fields
+  Ratings: { type: Number, default: 0, required: false },
+  DropLocation: { type: String, required: false, default: "Thane" },
+  KilometerLimit: { type: Number, required: false, default: 150 },
+  SecurityDeposit: { type: Number, required: false, default: 2000 },
 
-  Model: {
-    type: String,
-    required: true,
-  },
-  Year: {
-    type: Number,
-    required: true,
-  },
-  Price_Per_Hour: {
-    type: Number,
-    required: true,
-  },
-  Location: {
-    type: String,
-    required: true,
-  },
+  BikesAvailable: { type: Number, required: false },
 
-  OwnerId: {
-    type: String,
-    required: true,
-  },
-  Availability: {
-    type: Boolean,
-    required: true,
-  },
-  Photos: {
-    type: [String], // URL to the uploaded image
-    required: false,
-  },
+  // Required fields
+  FuelType: { type: String, required: true },
+  FuelCapacity: { type: Number, required: true },
+  Weight: { type: Number, required: true },
+  Mileage: { type: Number, required: true },
+  Displacement: { type: Number, required: true },
+  TopSpeed: { type: Number, required: true },
+  Seats: { type: Number, required: true },
 });
 
-// Define the Customer model with the correct database
+// Define model
 const vehicleModel = vehicleDB.model("Vehicle", vehicleSchema);
 
 module.exports = vehicleModel;

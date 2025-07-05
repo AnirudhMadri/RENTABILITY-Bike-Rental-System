@@ -6,35 +6,24 @@ const { body, validationResult } = require("express-validator");
 router.post(
   "/addVehicle",
   [
+    // Required user fields
     body("Type")
       .isIn(["Geared", "Non Geared"])
-      .withMessage("Type must be either 'Bike' or 'Car'"),
+      .withMessage("Type must be either 'Geared' or 'Non Geared'"),
 
-    body("Brand")
-      .isString()
-      .withMessage("Brand must be a string")
-      .notEmpty()
-      .withMessage("Brand is required"),
+    body("Brand").isString().notEmpty().withMessage("Brand is required"),
 
-    body("Model")
-      .isString()
-      .withMessage("Model must be a string")
-      .notEmpty()
-      .withMessage("Model is required"),
+    body("Model").isString().notEmpty().withMessage("Model is required"),
 
     body("Year")
       .isInt({ min: 1900, max: new Date().getFullYear() })
-      .withMessage("Year must be a valid number between 1900 and current year"),
+      .withMessage("Year must be valid"),
 
     body("Price_Per_Hour")
       .isFloat({ gt: 0 })
-      .withMessage("Price per hour must be a positive number"),
+      .withMessage("Price must be a positive number"),
 
-    body("Location")
-      .isString()
-      .withMessage("Location must be a string")
-      .notEmpty()
-      .withMessage("Location is required"),
+    body("Location").isString().notEmpty().withMessage("Location is required"),
 
     body("OwnerId")
       .isAlphanumeric()
@@ -43,31 +32,47 @@ router.post(
     body("Availability")
       .isBoolean()
       .withMessage("Availability must be true or false"),
+
     body("Photos")
       .isArray({ max: 4 })
       .withMessage("Photos must be an array of up to 4 image URLs"),
+
+    body("FuelType").isString().notEmpty().withMessage("FuelType is required"),
+
+    body("FuelCapacity")
+      .isFloat({ min: 0 })
+      .withMessage("FuelCapacity must be non-negative"),
+
+    body("Weight")
+      .isFloat({ min: 0 })
+      .withMessage("Weight must be non-negative"),
+
+    body("Mileage")
+      .isFloat({ min: 0 })
+      .withMessage("Mileage must be non-negative"),
+
+    body("Displacement")
+      .isFloat({ min: 0 })
+      .withMessage("Displacement must be non-negative"),
+
+    body("TopSpeed")
+      .isFloat({ min: 0 })
+      .withMessage("TopSpeed must be non-negative"),
+
+    body("Seats").isInt({ min: 1 }).withMessage("Seats must be at least 1"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
     try {
-      await Vehicle.create({
-        Type: req.body.Type,
-        Brand: req.body.Brand,
-        Model: req.body.Model,
-        Year: req.body.Year,
-        Price_Per_Hour: req.body.Price_Per_Hour,
-        Location: req.body.Location,
-        OwnerId: req.body.OwnerId,
-        Availability: req.body.Availability,
-        Photos: req.body.Photos,
-      });
+      await Vehicle.create(req.body);
       res.json({ success: true });
     } catch (error) {
-      console.log(error);
-      res.json({ success: false });
+      console.error("Error creating vehicle:", error);
+      res.status(500).json({ success: false, error: error.message });
     }
   }
 );

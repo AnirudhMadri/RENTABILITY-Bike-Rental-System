@@ -1,80 +1,64 @@
 #include <iostream>
-#include <unordered_map>
+#include <vector>
 #include <stack>
 
 using namespace std;
 
-class ListNode
+int findFloor(int arr[], int n, int x)
 {
-public:
-    int val;
-    ListNode *next;
-    ListNode(int x)
+    int low = 0, high = n - 1;
+    int ans = -1;
+
+    while (low <= high)
     {
-        val = x;
-        next = nullptr;
-    }
-};
-
-ListNode *head, *tail;
-
-void printList(ListNode *head)
-{
-    ListNode *curr = head;
-    while (curr != nullptr)
-    {
-        cout << curr->val << "-->";
-        curr = curr->next;
-    }
-    cout << "Null" << endl;
-}
-
-void InsertatLast(int value) // Function for creating a LinkedList
-{
-
-    ListNode *newnode = new ListNode(value);
-    if (head == nullptr)
-        head = newnode, tail = newnode;
-    else
-        tail = tail->next = newnode;
-}
-
-ListNode *SegregatetoOddEven()
-{
-    ListNode *oddHead = new ListNode(-1), *oddTail = oddHead;
-    ListNode *evenHead = new ListNode(-1), *evenTail = evenHead;
-    ListNode *curr = head, *temp;
-    while (curr)
-    {
-        temp = curr;
-        curr = curr->next;
-        temp->next = nullptr;
-
-        if (temp->val & 1)
+        int mid = (low + high) / 2;
+        if (arr[mid] <= x)
         {
-            oddTail->next = temp;
-            oddTail = temp;
+            ans = arr[mid];
+            low = mid + 1;
         }
         else
         {
-            evenTail->next = temp;
-            evenTail = temp;
+            high = mid - 1;
         }
     }
-    evenTail->next = oddHead->next;
-    return evenHead->next;
+    return ans;
+}
+
+int findCeil(int arr[], int n, int x)
+{
+    int low = 0, high = n - 1;
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        if (arr[mid] >= x)
+        {
+            ans = arr[mid];
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+pair<int, int> getFloorAndCeil(int arr[], int n, int x)
+{
+    int f = findFloor(arr, n, x);
+    int c = findCeil(arr, n, x);
+    return make_pair(f, c);
 }
 
 int main()
 {
-    InsertatLast(1);
-    InsertatLast(2);
-    InsertatLast(3);
-    InsertatLast(4);
-    cout << "Initial LinkedList : " << endl;
-    printList(head);
-    ListNode *newHead = SegregatetoOddEven();
-    cout << "LinkedList After Segregration " << endl;
-    printList(newHead);
+    int arr[] = {3, 4, 4, 7, 8, 10};
+    int n = 6, x = 5;
+    pair<int, int> ans = getFloorAndCeil(arr, n, x);
+    cout << "The floor and ceil are: " << ans.first
+         << " " << ans.second << endl;
     return 0;
 }
