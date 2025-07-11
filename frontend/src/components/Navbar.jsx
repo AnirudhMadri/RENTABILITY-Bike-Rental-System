@@ -54,7 +54,12 @@ export default function Navbar() {
         </div>
 
         <div className="backdrop-blur-sm bg-white/30 rounded-2xl flex items-center justify-around">
-          <button className="transition  delay-10 duration-300 ease-in-out hover:scale-110  mx-10 text-xl rounded-md hover:cursor-pointer">
+          <button
+            onClick={() => {
+              navigate("/bikes");
+            }}
+            className="transition  delay-10 duration-300 ease-in-out hover:scale-110  mx-10 text-xl rounded-md hover:cursor-pointer"
+          >
             Bikes
           </button>
           <button className="transition delay-10 duration-300 ease-in-out hover:scale-110  mx-10 text-xl rounded-md hover:cursor-pointer">
