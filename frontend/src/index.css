@@ -22,6 +22,14 @@
   font-style: normal;
 }
 
+
+@font-face {
+  font-family: 'ppneuemontrealbold';
+  src: url('/src/assets/fonts/ppneuemontrealbold.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'latobold';
   src: url('/src/assets/fonts/latobold.ttf') format('truetype');
